@@ -1,0 +1,10 @@
+name = "astro-dice-roller"
+compatibility_date = "2025-07-11"
+main = "src/index.ts"
+
+[build]
+command = "npm run build"
+
+[[kv_namespaces]]
+binding = "KV_ROLLS"
+id = "422feb527afd47f5815e68777c4ef565"
