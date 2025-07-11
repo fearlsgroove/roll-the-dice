@@ -1,16 +1,49 @@
 ---
-
+// No server-side props needed
 ---
-
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dice Roller</title>
+    <style>
+      body { font-family: system-ui, sans-serif; padding: 1rem; }
+      label { display: block; margin: .5rem 0; }
+      input[type="number"] { width: 4rem; }
+      button { margin-top: 1rem; }
+      pre { background: #111; color: #0f0; padding: 1rem; }
+    </style>
+  </head>
+  <body>
+    <h1>Roll your dice</h1>
+
+    <form id="roll-form">
+      <label>d4: <input type="number" name="d4" min="0" value="0" /></label>
+      <label>d6: <input type="number" name="d6" min="0" value="0" /></label>
+      <label>d8: <input type="number" name="d8" min="0" value="0" /></label>
+      <label>d12: <input type="number" name="d12" min="0" value="0" /></label>
+      <label>d20: <input type="number" name="d20" min="0" value="0" /></label>
+      <label>d100: <input type="number" name="d100" min="0" value="0" /></label>
+      <button type="submit">Roll</button>
+    </form>
+
+    <pre id="output"></pre>
+
+    <script type="module">
+      const form = document.getElementById('roll-form');
+      const out = document.getElementById('output');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const payload = {};
+        new FormData(form).forEach((v, k) => (payload[k] = Number(v)));
+        const res = await fetch('/api/roll', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        out.textContent = await res.text();
+      });
+    </script>
+  </body>
 </html>
