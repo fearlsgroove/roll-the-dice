@@ -1,14 +1,21 @@
 {
-  "name": "",
+  "name": "astro-dice-roller",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.11.0"
+    "@astrojs/cloudflare": "^10.4.0",
+    "@astrojs/preact": "^3.4.0",
+    "astro": "^4.9.2",
+    "preact": "^10.22.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.57.2"
   }
 }

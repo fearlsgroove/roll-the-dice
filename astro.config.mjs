@@ -1,7 +1,11 @@
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
-import cloudflare from '@astrojs/cloudflare';
+import cloudflare from "@astrojs/cloudflare";
 
+// https://astro.build/config
 export default defineConfig({
-  adapter: cloudflare(),
-  output: 'server', // Hybrid rendering for Workers
+  output: "server",
+  adapter: cloudflare({
+    mode: "directory"
+  }),
 });

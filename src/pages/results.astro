@@ -1,0 +1,47 @@
+---
+import { SIDES } from '../lib/dice';
+
+const kv = Astro.locals.runtime?.env?.KV_ROLLS;
+const results: Record<string, Record<number, number>> = {};
+
+if (kv) {
+  for (const sides of SIDES) {
+    const die = `d${sides}`;
+    results[die] = {};
+    for (let face = 1; face <= sides; face++) {
+      const count = parseInt(await kv.get(`${die}:${face}`) ?? '0', 10);
+      results[die][face] = count;
+    }
+  }
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dice Roll Stats</title>
+    <style>
+      body { font-family: system-ui, sans-serif; padding: 1rem; }
+      table { border-collapse: collapse; margin-bottom: 2rem; }
+      th, td { border: 1px solid #ccc; padding: 0.3rem 0.6rem; text-align: right; }
+      th { background: #f4f4f4; }
+    </style>
+  </head>
+  <body>
+    <h1>Stored Roll Distribution</h1>
+    {Object.entries(results).map(([die, faces]) => (
+      <>
+        <h2>{die}</h2>
+        <table>
+          <tr><th>Face</th><th>Count</th></tr>
+          {Object.entries(faces).map(([face, count]) => (
+            <tr><td>{face}</td><td>{count}</td></tr>
+          ))}
+        </table>
+      </>
+    ))}
+    <p><a href="/">Back to roller</a></p>
+  </body>
+</html>
